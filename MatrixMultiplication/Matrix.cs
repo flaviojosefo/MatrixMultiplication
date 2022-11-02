@@ -32,8 +32,8 @@ namespace MatrixMultiplication {
 
         public float this[int i] { get => matrix[i]; }
 
-        // Multiply 2 matrices and return the resulting matrix
-        public static Matrix MatMul(Matrix m1, Matrix m2) {
+        // Multiply 2 matrices and return the resulting matrix [classic]
+        public static Matrix MatMulC(Matrix m1, Matrix m2) {
 
             int m = m1.Rows;
             int n = m2.Cols;
@@ -42,7 +42,7 @@ namespace MatrixMultiplication {
 
             if (l != p) {
 
-                Console.WriteLine("Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
+                Console.WriteLine("Classic Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
                 return new(m, n);
             }
 
@@ -57,6 +57,40 @@ namespace MatrixMultiplication {
                     for (int k = 0; k < l; k++) {
 
                         sum += m1[i * l + k] * m2[k * n + j];
+                    }
+
+                    newMat[i * n + j] = sum;
+                }
+            }
+
+            return new Matrix(m, n) { matrix = newMat };
+        }
+
+        // Multiply 2 matrices and return the resulting matrix [transposed]
+        public static Matrix MatMulT(Matrix m1, Matrix m2, Matrix m2t) {
+
+            int m = m1.Rows;
+            int n = m2.Cols;
+            int l = m1.Cols;
+            int p = m2.Rows;
+
+            if (l != p) {
+
+                Console.WriteLine("Transposed Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
+                return new(m, n);
+            }
+
+            float[] newMat = new float[m * n];
+
+            for (int i = 0; i < m; i++) {
+
+                for (int j = 0; j < n; j++) {
+
+                    float sum = 0;
+
+                    for (int k = 0; k < l; k++) {
+
+                        sum += m1[i * l + k] * m2t[j * l + k];
                     }
 
                     newMat[i * n + j] = sum;
