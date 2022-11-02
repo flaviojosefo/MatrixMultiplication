@@ -6,15 +6,26 @@ namespace MatrixMultiplication {
 
         static void Main(string[] args) {
 
-            Matrix mat1 = new Matrix(3, 5);
-            Matrix mat2 = new Matrix(5, 3);
+            int m = 3;
+            int n = 5;
+
+            Matrix mat1 = new Matrix(m, n);
+            Matrix mat2 = new Matrix(n, m);
 
             Matrix mat2T = mat2.Transposed;
 
+            Matrix2D mat5 = new Matrix2D(m, n);
+            Matrix2D mat6 = new Matrix2D(n, m);
+
             Stopwatch sw = Stopwatch.StartNew();
 
+            Matrix2D mat7 = Matrix2D.MatMul(mat5, mat6);
+            double classicDouble = sw.Elapsed.TotalMilliseconds;
+
+            sw.Restart();
+
             Matrix mat3 = Matrix.MatMulC(mat1, mat2);
-            double classic = sw.Elapsed.TotalMilliseconds;
+            double classicLinear = sw.Elapsed.TotalMilliseconds;
 
             sw.Restart();
 
@@ -23,20 +34,31 @@ namespace MatrixMultiplication {
 
             sw.Stop();
 
-            Console.WriteLine(mat1);
-            Console.WriteLine(mat2);
+            //Console.WriteLine(mat1);
+            //Console.WriteLine(mat2);
+
+            Console.Write(mat7);
+            Console.WriteLine($"Time (Classic - Double): {classicDouble:0.00} ms\n");
 
             Console.Write(mat3);
-            Console.WriteLine($"Time (classic): {classic:0.00}\n");
+            Console.WriteLine($"Time (Classic - Linear): {classicLinear:0.00} ms\n");
 
             Console.Write(mat4);
-            Console.WriteLine($"Time (transposed): {transposed:0.00}\n");
+            Console.WriteLine($"Time (Transposed): {transposed:0.00} ms\n");
 
-            string speedUp = (transposed > classic ? 
-                $"Slow down: {(transposed / classic):0.00}x" : 
-                $"Speed up: {(classic / transposed):0.00}x") + '\n';
+            string dlSpeed = classicLinear > classicDouble ?
+                $"    Double to Linear: Slow down of {classicLinear / classicDouble:0.00}x\n" :
+                $"    Double to Linear: Speed up of {classicDouble / classicLinear:0.00}x\n";
 
-            Console.WriteLine(speedUp);
+            string dtSpeed = transposed > classicDouble ?
+                $"Double to Transposed: Slow down of {transposed / classicDouble:0.00}x\n" :
+                $"Double to Transposed: Speed up of {classicDouble / transposed:0.00}x\n";
+
+            string ltSpeed = transposed > classicLinear ?
+                $"Linear to Transposed: Slow down of {transposed / classicLinear:0.00}x\n" :
+                $"Linear to Transposed: Speed up of {classicLinear / transposed:0.00}x\n";
+
+            Console.WriteLine(dlSpeed + dtSpeed + ltSpeed);
 
             Console.ReadKey();
         }

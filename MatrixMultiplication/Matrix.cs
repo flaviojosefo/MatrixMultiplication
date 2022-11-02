@@ -121,6 +121,9 @@ namespace MatrixMultiplication {
         // Return a readeable Matrix text representation
         public override string ToString() {
 
+            if (Length > 250)
+                return "Matrix is too big to be drawn!\n";
+
             string mat = "";
 
             for (int i = 0; i < Rows; i++) {
