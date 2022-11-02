@@ -13,7 +13,7 @@ namespace MatrixMultiplication {
         public int Rows { get; }
         public int Cols { get; }
 
-        public int Length { get => matrix.Length; }
+        public int Length { get => Rows * Cols; }
 
         public Matrix Transposed => Transpose(this);
 
@@ -38,6 +38,13 @@ namespace MatrixMultiplication {
             int m = m1.Rows;
             int n = m2.Cols;
             int l = m1.Cols;
+            int p = m2.Rows;
+
+            if (l != p) {
+
+                Console.WriteLine("Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
+                return new(m, n);
+            }
 
             float[] newMat = new float[m * n];
 
