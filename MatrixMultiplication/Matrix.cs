@@ -24,7 +24,7 @@ namespace MatrixMultiplication {
 
             matrix = new float[Rows * Cols];
 
-            for (int i = 0; i < Rows * Cols; i++) {
+            for (int i = 0; i < matrix.Length; i++) {
 
                 matrix[i] = i;
             }
