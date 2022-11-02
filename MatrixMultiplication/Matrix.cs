@@ -77,7 +77,7 @@ namespace MatrixMultiplication {
 
                 for (int j = 0; j < n; j++) {
 
-                    transposed[j + i * n] = mat[i + j * m];
+                    transposed[i + j * m] = mat[j + i * n];
                 }
             }
 
