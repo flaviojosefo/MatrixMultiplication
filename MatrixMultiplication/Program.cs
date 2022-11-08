@@ -29,13 +29,15 @@ namespace MatrixMultiplication {
 
             sw.Restart();
 
-            Matrix mat4 = Matrix.MatMulT(mat1, mat2, mat2T);
+            Matrix mat4 = Matrix.MatMulT(mat1, mat2T);
             double transposed = sw.Elapsed.TotalMilliseconds;
 
             sw.Stop();
 
             //Console.WriteLine(mat1);
             //Console.WriteLine(mat2);
+
+            Console.WriteLine("Calculating...\n");
 
             Console.Write(mat7);
             Console.WriteLine($"Time (Classic - Double): {classicDouble:0.00} ms\n");

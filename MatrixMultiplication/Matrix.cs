@@ -67,16 +67,16 @@ namespace MatrixMultiplication {
         }
 
         // Multiply 2 matrices and return the resulting matrix [transposed]
-        public static Matrix MatMulT(Matrix m1, Matrix m2, Matrix m2t) {
+        public static Matrix MatMulT(Matrix m1, Matrix m2t) {
 
             int m = m1.Rows;
-            int n = m2.Cols;
+            int n = m2t.Rows; // -> m2.Cols
             int l = m1.Cols;
-            int p = m2.Rows;
+            int p = m2t.Cols; // -> m2.Rows
 
             if (l != p) {
 
-                Console.WriteLine("Transposed Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
+                Console.WriteLine("Transposed Matrix Multiplication Failed: Cols of m1 must match Cols of m2t!\n");
                 return new(m, n);
             }
 
