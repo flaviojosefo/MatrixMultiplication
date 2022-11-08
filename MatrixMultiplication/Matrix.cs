@@ -118,6 +118,21 @@ namespace MatrixMultiplication {
             return new Matrix(n, m) { matrix = transposed };
         }
 
+        public static Matrix Linearise(Matrix2D m) {
+
+            float[] linearMat = new float[m.Length];
+
+            for (int i = 0; i < m.Rows; i++) {
+
+                for (int j = 0; j < m.Cols; j++) {
+
+                    linearMat[j + (i * m.Cols)] = m[i, j];
+                }
+            }
+
+            return new Matrix(m.Rows, m.Cols) { matrix = linearMat };
+        }
+
         // Return a readeable Matrix text representation
         public override string ToString() {
 
