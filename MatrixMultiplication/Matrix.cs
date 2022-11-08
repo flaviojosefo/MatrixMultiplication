@@ -126,7 +126,7 @@ namespace MatrixMultiplication {
 
                 for (int j = 0; j < m.Cols; j++) {
 
-                    linearMat[j + (i * m.Cols)] = m[i, j];
+                    linearMat[j + (i * m.Cols)] = m[i, j]; // x * (y * Width) -> Row Major
                 }
             }
 
