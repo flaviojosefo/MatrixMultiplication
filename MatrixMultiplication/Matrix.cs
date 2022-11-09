@@ -100,6 +100,42 @@ namespace MatrixMultiplication {
             return new Matrix(m, n) { matrix = newMat };
         }
 
+        public static Matrix MatMulP(Matrix m1, Matrix m2) {
+
+
+
+            return new();
+        }
+
+        public static Matrix[] PartitionHorizontal(Matrix m) {
+
+            int rows = m.Rows / 2;
+            int cols = m.Cols;
+
+            int odd = m.Rows % 2;
+
+            Matrix[] matrices = new Matrix[2];
+
+            for (int i = 0; i < 2; i++) {
+
+                rows += odd * i;
+
+                int length = rows * cols;
+
+                float[] newMat = new float[length];
+                int shift = (rows - odd) * cols * i; // The amount of indexes the matrix should skip towards
+
+                for (int j = 0; j < length; j++) {
+
+                    newMat[j] = m[shift + j];
+                }
+
+                matrices[i] = new Matrix(rows, cols) { matrix = newMat };
+            }
+
+            return matrices;
+        }
+
         public static Matrix Transpose(Matrix mat) {
 
             int m = mat.Rows;
