@@ -8,7 +8,7 @@ namespace MatrixMultiplication {
 
             int m = 8;
             int n = 5;
-            int l = 8;
+            int l = 5;
 
             Matrix mat1 = new Matrix(m, n);
             Matrix mat2 = new Matrix(n, l);
@@ -35,7 +35,7 @@ namespace MatrixMultiplication {
 
             sw.Restart();
 
-            Matrix[] mats = Matrix.PartitionHorizontal(mat3);
+            Matrix[] mats = Matrix.PartitionVertical(mat3);
             double partitioned = sw.Elapsed.TotalMilliseconds;
 
             sw.Stop();

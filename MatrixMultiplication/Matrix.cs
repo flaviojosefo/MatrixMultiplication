@@ -123,6 +123,7 @@ namespace MatrixMultiplication {
                 int length = rows * cols;
 
                 float[] newMat = new float[length];
+
                 int shift = (rows - odd) * cols * i; // The amount of indexes the matrix should skip towards
 
                 for (int j = 0; j < length; j++) {
@@ -131,6 +132,40 @@ namespace MatrixMultiplication {
                 }
 
                 matrices[i] = new Matrix(rows, cols) { matrix = newMat };
+            }
+
+            return matrices;
+        }
+
+        public static Matrix[] PartitionVertical(Matrix m) {
+
+            int rows = m.Rows;
+            int cols = m.Cols / 2;
+
+            int odd = m.Cols % 2;
+
+            Matrix[] matrices = new Matrix[2];
+
+            for (int i = 0; i < 2; i++) {
+
+                cols += odd * i;
+
+                int length = rows * cols;
+
+                float[] newMat = new float[length];
+
+                int shift = (cols - odd) * i;
+                int slot = cols + (-((i % cols) - (1 - i)) * odd);
+
+                for (int j = 0; j < length; j++) {
+
+                    int row = -((j % cols) - j) / cols;
+                    newMat[j] = m[(j + shift) + (row * slot)];
+                }
+
+                matrices[i] = new Matrix(rows, cols) { matrix = newMat };
+                //Console.WriteLine(matrices[i]);
+                //Console.Write('\n');
             }
 
             return matrices;
