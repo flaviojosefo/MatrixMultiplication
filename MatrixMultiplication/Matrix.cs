@@ -155,7 +155,7 @@ namespace MatrixMultiplication {
                 float[] newMat = new float[length];
 
                 int shift = (cols - odd) * i;
-                int slot = cols + (-((i % cols) - (1 - i)) * odd);
+                int slot = cols + (-((i % cols) - (odd - i)) * odd);
 
                 for (int j = 0; j < length; j++) {
 
@@ -164,8 +164,6 @@ namespace MatrixMultiplication {
                 }
 
                 matrices[i] = new Matrix(rows, cols) { matrix = newMat };
-                //Console.WriteLine(matrices[i]);
-                //Console.Write('\n');
             }
 
             return matrices;
