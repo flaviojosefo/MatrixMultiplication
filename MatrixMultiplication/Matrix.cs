@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,11 +103,60 @@ namespace MatrixMultiplication {
 
         public static Matrix MatMulP(Matrix m1, Matrix m2) {
 
+            int l = m1.Cols;
 
+            if (l != m2.Rows) {
 
-            return new();
+                Console.WriteLine("Classic Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
+                return new(m1.Rows, m2.Cols);
+            }
+
+            Task[] tasks = new Task[4];
+
+            int m = m1.Rows;
+            int n = m2.Cols;
+
+            float[] newMat = new float[m * n];
+
+            int halfRowsM1 = m / 2;
+            int halfColsM2 = n / 2;
+
+            for (int i = 0; i < 4; i++) {
+
+                int m1Switch = -((i % 2) - i) / 2;
+                int m2Switch = i % 2;
+
+                int m1Begin = halfRowsM1 * m1Switch;
+                int m2Begin = halfColsM2 * m2Switch;
+
+                int m1End = (m1Begin * m1Switch) + halfRowsM1;
+                int m2End = (m2Begin * m2Switch) + halfColsM2;
+
+                tasks[i] = Task.Factory.StartNew(() => {
+
+                    for (int i = m1Begin; i < m1End; i++) {
+
+                        for (int j = m2Begin; j < m2End; j++) {
+
+                            float sum = 0;
+
+                            for (int k = 0; k < l; k++) {
+
+                                sum += m1[i * l + k] * m2[k * n + j];
+                            }
+
+                            newMat[i * n + j] = sum;
+                        }
+                    }
+                });
+            }
+
+            Task.WaitAll(tasks);
+
+            return new Matrix(m, n) { matrix = newMat };
         }
 
+        // Divides a Matrix horizontally in 2 (NOT USED IN PARALLEL MULTIPLICATION)
         public static Matrix[] PartitionHorizontal(Matrix m) {
 
             int rows = m.Rows / 2;
@@ -137,6 +187,7 @@ namespace MatrixMultiplication {
             return matrices;
         }
 
+        // Divides a Matrix vertically in 2 (NOT USED IN PARALLEL MULTIPLICATION)
         public static Matrix[] PartitionVertical(Matrix m) {
 
             int rows = m.Rows;
@@ -205,8 +256,23 @@ namespace MatrixMultiplication {
         // Return a readeable Matrix text representation
         public override string ToString() {
 
-            if (Length > 250)
-                return "Matrix is too big to be drawn!\n";
+            if (Length > 250) {
+
+                int toShow = 5;
+
+                string firstValues = $"Showing first {toShow} indexes: ";
+                string lastValues = $"Showing last {toShow} indexes: ";
+
+                int shiftEnd = Length - 1 - toShow;
+
+                for (int i = 0; i < toShow; i++) {
+
+                    firstValues += $"{matrix[i]}" + (i == toShow - 1 ? '\n' : ", ");
+                    lastValues += $"{matrix[shiftEnd + i]} " + (i == toShow - 1 ? '\n' : ", ");
+                }
+
+                return firstValues + lastValues;
+            }
 
             string mat = "";
 
