@@ -64,8 +64,24 @@
         // Return a readeable Matrix text representation
         public override string ToString() {
 
-            if (Length > 250)
-                return "Matrix is too big to be drawn!\n";
+            // Show the 5 first/last values if the Matrix is too long
+            if (Length > 250) {
+
+                int toShow = 5;
+
+                string firstValues = $"Showing first {toShow} indexes: ";
+                string lastValues = $"Showing last  {toShow} indexes: ";
+
+                int shiftEnd = Cols - toShow;
+
+                for (int i = 0; i < toShow; i++) {
+
+                    firstValues += $"{matrix[0, i]}" + (i == toShow - 1 ? '\n' : ", ");
+                    lastValues += $"{matrix[Rows - 1, shiftEnd + i]}" + (i == toShow - 1 ? '\n' : ", ");
+                }
+
+                return firstValues + lastValues;
+            }
 
             string mat = "";
 

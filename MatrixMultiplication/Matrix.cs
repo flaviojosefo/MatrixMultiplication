@@ -313,7 +313,7 @@
                 string firstValues = $"Showing first {toShow} indexes: ";
                 string lastValues =  $"Showing last  {toShow} indexes: ";
 
-                int shiftEnd = Length - 1 - toShow;
+                int shiftEnd = Length - toShow;
 
                 for (int i = 0; i < toShow; i++) {
 
