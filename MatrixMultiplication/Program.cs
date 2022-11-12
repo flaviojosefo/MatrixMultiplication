@@ -6,14 +6,14 @@ namespace MatrixMultiplication {
 
         static void Main(string[] args) {
 
-            int m = 2000;
-            int n = 2000;
-            int l = 2000;
+            int m = 24;
+            int n = 24;
+            int l = 24;
 
-            Matrix mat1 = new Matrix(m, n);
-            Matrix mat2 = new Matrix(n, l);
+            Matrix mat1 = new Matrix(m, n, true);
+            Matrix mat2 = new Matrix(n, l, true);
 
-            Matrix mat2T = mat2.Transposed;
+            //Matrix mat2T = mat2.Transposed;
 
             //Matrix2D mat5 = new Matrix2D(m, n);
             //Matrix2D mat6 = new Matrix2D(n, l);
@@ -42,7 +42,7 @@ namespace MatrixMultiplication {
 
             sw.Restart();
 
-            Matrix matP = Matrix.MatMulP(mat1, mat2);
+            Matrix matP = Matrix.MatMulP(mat1, mat2, 8);
             double linearParallel = sw.Elapsed.TotalMilliseconds;
 
             sw.Stop();
