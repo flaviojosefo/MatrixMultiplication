@@ -33,7 +33,7 @@
         // Multiply 2 matrices and return the resulting matrix [classic]
         public static Matrix MatMulC(Matrix m1, Matrix m2) {
 
-            // Store Rows/Cols values of m1 and m2t
+            // Store Rows/Cols values of m1 and m2
             int m = m1.Rows;
             int n = m2.Cols;
             int l = m1.Cols;
@@ -49,7 +49,7 @@
             // The matrix to be returned
             float[] newMat = new float[m * n];
 
-            // Standard (single index) matrix 'multiplication' algorithm
+            // Standard (single index) matrix multiplication algorithm
             for (int i = 0; i < m; i++) {
 
                 for (int j = 0; j < n; j++) {

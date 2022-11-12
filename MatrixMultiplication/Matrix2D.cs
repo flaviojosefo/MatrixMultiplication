@@ -30,19 +30,23 @@
 
         public static Matrix2D MatMul(Matrix2D m1, Matrix2D m2) {
 
+            // Store Rows/Cols values of m1 and m2
             int m = m1.Rows;
             int n = m2.Cols;
             int l = m1.Cols;
             int p = m2.Rows;
 
+            // Verify if given matrices are valid
             if (l != p) {
 
                 Console.WriteLine("Classic Matrix Multiplication Failed: Cols of m1 must match Rows of m2!\n");
                 return new(m, n);
             }
 
+            // The matrix to be returned
             float[,] newMatrix = new float[m, n];
 
+            // Standard (double index) matrix multiplication algorithm
             for (int i = 0; i < m; i++) {
 
                 for (int j = 0; j < n; j++) {
@@ -58,6 +62,7 @@
                 }
             }
 
+            // Return the newly created matrix
             return newMatrix;
         }
 
