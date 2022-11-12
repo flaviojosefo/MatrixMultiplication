@@ -377,7 +377,7 @@
         public override string ToString() {
 
             // Show the 5 first/last values if the Matrix is too long
-            if (Length > 250) {
+            if (Length > 100) {
 
                 int toShow = 5;
 
