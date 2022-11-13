@@ -109,7 +109,7 @@
         }
 
         // Multithreaded approach to Classic matrix multiplication
-        public static Matrix MatMulPC(Matrix m1, Matrix m2, int tasks) {
+        public static Matrix MatMulPC(Matrix m1, Matrix m2, int threads) {
 
             // Store Rows/Cols values of m1 and m2
             int m = m1.Rows;
@@ -127,21 +127,18 @@
             float[] newMat = new float[m * n];
 
             // Half the number of tasks acts as division for partition of m2
-            int halfTasks = tasks / 2;
+            int halfThreads = threads / 2;
 
             // Matrix partitions boundaries
             int halfRowsM1 = m / 2;
-            int divColsM2 = n / halfTasks;
+            int divColsM2 = n / halfThreads;
 
-            // The tasks to initiate
-            Task[] partMuls = new Task[tasks];
-
-            // Loop through the number of tasks
-            for (int i = 0; i < tasks; i++) {
+            // Loop through the number of "threads"
+            Parallel.For(0, threads, i => {
 
                 // Calculate "switches" that control m1 and m2 indexation
-                int m1Switch = -((i % halfTasks) - i) / halfTasks;
-                int m2Switch = i % halfTasks;
+                int m1Switch = -((i % halfThreads) - i) / halfThreads;
+                int m2Switch = i % halfThreads;
 
                 // Calculate on which row/col the multiplications should begin for the current partition
                 int m1Begin = halfRowsM1 * m1Switch;
@@ -151,63 +148,29 @@
                 int m1End = m1Begin + halfRowsM1;
                 int m2End = m2Begin + divColsM2;
 
-                // Inititate a task (queue a partition multiplication on the thread pool)
-                partMuls[i] = Task.Run(() => {
+                // Standard (single index) matrix multiplication algorithm
+                for (int ix = m1Begin; ix < m1End; ix++) {
 
-                    // Standard (single index) matrix multiplication algorithm
-                    for (int i = m1Begin; i < m1End; i++) {
+                    for (int j = m2Begin; j < m2End; j++) {
 
-                        for (int j = m2Begin; j < m2End; j++) {
+                        float sum = 0;
 
-                            float sum = 0;
+                        for (int k = 0; k < l; k++) {
 
-                            for (int k = 0; k < l; k++) {
-
-                                sum += m1[i * l + k] * m2[k * n + j];
-                            }
-
-                            newMat[i * n + j] = sum;
+                            sum += m1[ix * l + k] * m2[k * n + j];
                         }
+
+                        newMat[ix * n + j] = sum;
                     }
-                });
-            }
-
-            // Wait for all tasks to finish
-            Task.WaitAll(partMuls);
-
-            //Parallel.For(0, tasks, (i) => {
-
-            //    int m1Switch = -((i % halfTasks) - i) / halfTasks;
-            //    int m2Switch = i % halfTasks;
-
-            //    int m1Begin = halfRowsM1 * m1Switch;
-            //    int m2Begin = divColsM2 * m2Switch;
-
-            //    int m1End = m1Begin + halfRowsM1;
-            //    int m2End = m2Begin + divColsM2;
-
-            //    for (int ix = m1Begin; ix < m1End; ix++) {
-
-            //        for (int j = m2Begin; j < m2End; j++) {
-
-            //            float sum = 0;
-
-            //            for (int k = 0; k < l; k++) {
-
-            //                sum += m1[ix * l + k] * m2[k * n + j];
-            //            }
-
-            //            newMat[ix * n + j] = sum;
-            //        }
-            //    }
-            //});
+                }
+            });
 
             // Return the newly created matrix
             return new Matrix(m, n) { matrix = newMat };
         }
 
         // Multithreaded approach to Transposed matrix 'multiplication'
-        public static Matrix MatMulPT(Matrix m1, Matrix m2t, int tasks) {
+        public static Matrix MatMulPT(Matrix m1, Matrix m2t, int threads) {
 
             // Store Rows/Cols values of m1 and m2t
             int m = m1.Rows;
@@ -225,21 +188,18 @@
             float[] newMat = new float[m * n];
 
             // Half the number of tasks acts as division for partition of m2t
-            int halfTasks = tasks / 2;
+            int halfThreads = threads / 2;
 
             // Matrix partitions boundaries
             int halfRowsM1 = m / 2;
-            int divColsM2 = n / halfTasks;
+            int divColsM2 = n / halfThreads;
 
-            // The tasks to initiate
-            Task[] partMuls = new Task[tasks];
-
-            // Loop through the number of tasks
-            for (int i = 0; i < tasks; i++) {
+            // Loop through the number of "threads"
+            Parallel.For(0, threads, i => {
 
                 // Calculate "switches" that control m1 and m2t indexation
-                int m1Switch = -((i % halfTasks) - i) / halfTasks;
-                int m2Switch = i % halfTasks;
+                int m1Switch = -((i % halfThreads) - i) / halfThreads;
+                int m2Switch = i % halfThreads;
 
                 // Calculate on which row/col the multiplications should begin for the current partition
                 int m1Begin = halfRowsM1 * m1Switch;
@@ -249,28 +209,22 @@
                 int m1End = m1Begin + halfRowsM1;
                 int m2End = m2Begin + divColsM2;
 
-                // Inititate a task (queue a partition multiplication on the thread pool)
-                partMuls[i] = Task.Run(() => {
+                // Transposed (single index) matrix "multiplication" algorithm
+                for (int ix = m1Begin; ix < m1End; ix++) {
 
-                    // Transposed (single index) matrix multiplication algorithm
-                    for (int i = m1Begin; i < m1End; i++) {
+                    for (int j = m2Begin; j < m2End; j++) {
 
-                        for (int j = m2Begin; j < m2End; j++) {
+                        float sum = 0;
 
-                            float sum = 0;
+                        for (int k = 0; k < l; k++) {
 
-                            for (int k = 0; k < l; k++) {
-
-                                sum += m1[i * l + k] * m2t[j * l + k];
-                            }
-
-                            newMat[i * n + j] = sum;
+                            sum += m1[ix * l + k] * m2t[j * l + k];
                         }
-                    }
-                });
-            }
 
-            Task.WaitAll(partMuls);
+                        newMat[ix * n + j] = sum;
+                    }
+                }
+            });
 
             // Return the newly created matrix
             return new Matrix(m, n) { matrix = newMat };

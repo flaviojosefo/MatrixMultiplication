@@ -7,12 +7,12 @@ namespace MatrixMultiplication {
         private const string PROJECT_TITLE = "Matrix Multiplication";
 
         // Const variables [CHANGE THESE]
-        private const int THREADS = 4;
+        private const int THREADS = 8;
 
-        private const int M1_ROWS = 2000;
-        private const int M1_COLS = 2000;
-        private const int M2_ROWS = 2000;
-        private const int M2_COLS = 2000;
+        private const int M1_ROWS = 2048;
+        private const int M1_COLS = 2048;
+        private const int M2_ROWS = 2048;
+        private const int M2_COLS = 2048;
 
         private readonly Matrix m1;
         private readonly Matrix m2;
