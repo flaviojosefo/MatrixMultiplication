@@ -17,11 +17,9 @@ namespace MatrixMultiplication {
         private readonly Matrix m1;
         private readonly Matrix m2;
         private readonly Matrix m2T;
-        private Matrix result;
 
         private readonly Matrix2D m1_2D;
         private readonly Matrix2D m2_2D;
-        private Matrix2D result_2D;
 
         private readonly string[] multMethods;
 
@@ -173,12 +171,17 @@ namespace MatrixMultiplication {
             // Current multiplication info
             double[] operationsTime = new double[indexes.Length];
 
+            // Create necessary matrices as local variables
+            Matrix result = new();
+            Matrix2D result_2D = new();
+
             // Set a timer to evaluate performance
             Stopwatch sw = new();
             
             for (int i = 0; i < indexes.Length; i++) {
 
-                Console.WriteLine($"---------- {multMethods[indexes[i]]} ----------\n");
+                Console.WriteLine($"---------- {multMethods[indexes[i]]} ----------\n" + 
+                                   "\nCalculating...\n");
 
                 // Restart the timer
                 sw.Restart();
@@ -219,7 +222,7 @@ namespace MatrixMultiplication {
                 else
                     Console.WriteLine(result);
 
-                Console.WriteLine($"Time ({multMethods[indexes[i]]}): {operationsTime[i]:0.000} ms\n");
+                Console.WriteLine($"Time: {operationsTime[i]:0.000} ms\n");
                 Console.WriteLine($"----------------------------------------------------\n");
             }
 
