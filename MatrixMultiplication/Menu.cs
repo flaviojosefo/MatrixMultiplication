@@ -6,14 +6,25 @@ namespace MatrixMultiplication {
 
         private const string PROJECT_TITLE = "Matrix Multiplication";
 
-        // Const variables [CHANGE THESE]
+        // ##### Const variables [CHANGE THESE] #####
+
+        // Controls the number of "threads" on parallelized methods
         private const int THREADS = 8;
 
-        private const int M1_ROWS = 2048;
-        private const int M1_COLS = 2048;
-        private const int M2_ROWS = 2048;
-        private const int M2_COLS = 2048;
+        // Controls matrices bounds
+        private const int M1_ROWS = 2000;
+        private const int M1_COLS = 2000;
+        private const int M2_ROWS = 2000;
+        private const int M2_COLS = 2000;
 
+        // Controls if matrices should be filled with a specific number
+        // NULL = Incremented values (0,1,2,...) / NOT NULL = Specified number (across the whole matrix)
+        private readonly float? M1_FILL = null;
+        private readonly float? M2_FILL = null;
+
+        // ##########################################
+
+        // Matrices
         private readonly Matrix m1;
         private readonly Matrix m2;
         private readonly Matrix m2T;
@@ -21,6 +32,7 @@ namespace MatrixMultiplication {
         private readonly Matrix2D m1_2D;
         private readonly Matrix2D m2_2D;
 
+        // Menu options
         private readonly string[] multMethods;
 
         public Menu(int width, int height) {
@@ -49,13 +61,13 @@ namespace MatrixMultiplication {
             };
 
             // Build the 1D matrices
-            m1 = new(M1_ROWS, M1_COLS, true);
-            m2 = new(M2_ROWS, M2_COLS, true);
+            m1 = new(M1_ROWS, M1_COLS, true, M1_FILL);
+            m2 = new(M2_ROWS, M2_COLS, true, M2_FILL);
             m2T = m2.Transposed;
 
             // Build the 2D matrices
-            m1_2D = new(M1_ROWS, M1_COLS, true);
-            m2_2D = new(M2_ROWS, M2_COLS, true);
+            m1_2D = new(M1_ROWS, M1_COLS, true, M1_FILL);
+            m2_2D = new(M2_ROWS, M2_COLS, true, M2_FILL);
         }
 
         public void DisplayMultMethods(int cursor = 0, int menu = 0, int first = -1, int second = -1) {
